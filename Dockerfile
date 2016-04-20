@@ -1,20 +1,18 @@
-FROM ubuntu:14.04
-MAINTAINER Takayuki Shimizukawa shimizukawa@gmail.com
-
-# environment
-ENV DEBIAN_FRONTEND noninteractive
+FROM centos:latest
+MAINTAINER Christopher Smith <chris@binc.jp>
 
 # update
-RUN apt-get update && apt-get -y upgrade
+RUN yum update -y
 
 # ruby related packages for td-agent
-RUN apt-get -y install curl libcurl4-openssl-dev ruby ruby-dev make
+RUN yum install -y make ruby ruby-devel
 
 # install fluentd td-agent
-RUN curl -L http://toolbelt.treasuredata.com/sh/install-ubuntu-trusty-td-agent2.sh | sh
+ADD ./install-redhat-td-agent2-sudoless.sh /tmp/td.sh
+RUN sh /tmp/td.sh && rm /tmp/td.sh
 
 # clean cache files
-RUN apt-get clean && rm -rf /var/cache/apt/archives/* /var/lib/apt/lists/*
+RUN yum clean all
 
 # install fluentd plugins
 RUN /opt/td-agent/embedded/bin/fluent-gem install --no-ri --no-rdoc \
@@ -22,8 +20,7 @@ RUN /opt/td-agent/embedded/bin/fluent-gem install --no-ri --no-rdoc \
     fluent-plugin-record-modifier \
     fluent-plugin-exclude-filter
 
-
 # add conf
 ADD ./etc/fluentd /etc/fluentd
 
-CMD /etc/init.d/td-agent stop && /opt/td-agent/embedded/bin/fluentd -c /etc/fluentd/fluent.conf
+CMD /opt/td-agent/embedded/bin/fluentd -c /etc/fluentd/fluent.conf
