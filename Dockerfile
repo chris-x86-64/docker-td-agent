@@ -5,7 +5,7 @@ MAINTAINER Christopher Smith <chris@binc.jp>
 RUN yum update -y
 
 # ruby related packages for td-agent
-RUN yum install -y make ruby ruby-devel
+RUN yum install -y make ruby ruby-devel net-tools
 
 # install fluentd td-agent
 ADD ./install-redhat-td-agent2-sudoless.sh /tmp/td.sh
@@ -18,9 +18,13 @@ RUN yum clean all
 RUN /opt/td-agent/embedded/bin/fluent-gem install --no-ri --no-rdoc \
     fluent-plugin-elasticsearch \
     fluent-plugin-record-modifier \
-    fluent-plugin-exclude-filter
+    fluent-plugin-exclude-filter \
+    fluent-plugin-s3 \
+    fluent-plpugin-forest
 
-# add conf
+# add conf and dirs
 ADD ./etc/fluentd /etc/fluentd
+RUN mkdir /srv/td-agent
+RUN mkdir -p /var/cache/td-agent/buffers
 
 CMD /opt/td-agent/embedded/bin/fluentd -c /etc/fluentd/fluent.conf
