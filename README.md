@@ -19,11 +19,15 @@ Either the packaged `fluent.conf` or the one within a mounted volume is used.
 
 # Simple usage
 
-`docker run -d -v /path/to/fluentdconfdir:/etc/fluentd chrisx86/td-agent
+`docker run -d -v /path/to/fluentdconfdir:/etc/fluentd chrisx86/td-agent`
 
 Timezone is crucial so you may want to explicitly define it:
 
-`docker run -d -v /path/to/fluentdconfdir:/etc/fluentd -e TZ=Asia/Tokyo chrisx86/td-agent
+`docker run -d -v /path/to/fluentdconfdir:/etc/fluentd -e TZ=Asia/Tokyo chrisx86/td-agent`
+
+Expose td-agent port to collect syslog from devices over the network.
+
+`docker run -d -p 5140:5140/udp -v /path/to/fluentdconfdir:/etc/fluentd chrisx86/td-agent`
 
 # settings
 
