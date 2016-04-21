@@ -16,6 +16,9 @@ Either the packaged `fluent.conf` or the one within a mounted volume is used.
 
 `-v /path/to/fluentdconfdir:/etc/fluentd`
 
+When SELinux is enabled, a `Z` flag may be appropriate.
+
+`-v /path/to/fluentdconfdir:/etc/fluentd:Z`
 
 # Simple usage
 
