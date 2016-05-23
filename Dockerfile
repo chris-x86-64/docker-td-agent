@@ -20,7 +20,8 @@ RUN /opt/td-agent/embedded/bin/fluent-gem install --no-ri --no-rdoc \
     fluent-plugin-record-modifier \
     fluent-plugin-exclude-filter \
     fluent-plugin-s3 \
-    fluent-plpugin-forest
+    fluent-plugin-forest \
+    fluent-plugin-slack
 
 # add conf and dirs
 ADD ./etc/fluentd /etc/fluentd
